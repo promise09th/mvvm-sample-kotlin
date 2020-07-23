@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MVVM Kotlin 예제</string>
+    <string name="search">검색</string>
+    <string name="search_view_hint">검색어를 입력해주세요</string>
+    <string name="fetch_complete">더이상 가져올 정보가 없습니다.</string>
+    <string name="fetch_error">문제가 발생하여 내용을 가져오지 못했습니다.</string>
+
+    <string name="detail_contents_title">내용</string>
+    <string name="detail_url_title">Url</string>
+    <string name="detail_isbn_title">isbn</string>
+    <string name="detail_authors_title">저자</string>
+    <string name="detail_publisher_title">발행사</string>
+    <string name="detail_translators_title">번역가</string>
+    <string name="detail_price_title">가격</string>
+    <string name="detail_status_title">상태</string>
+
+    <string name="detail_price_format">가격 : %d 원</string>
+    <string name="detail_sale_price_format">세일 가격 : %d 원</string>
+</resources>

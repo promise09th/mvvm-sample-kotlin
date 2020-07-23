@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.promise09th.mvvmkotlin.presentation.main.viewmodel.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_result_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/count_dimen_margin"
+            android:gravity="center"
+            android:paddingTop="@dimen/count_dimen_padding_vertical"
+            android:paddingBottom="@dimen/count_dimen_padding_vertical"
+            android:paddingStart="@dimen/count_dimen_padding_horizontal"
+            android:paddingEnd="@dimen/count_dimen_padding_horizontal"
+            android:background="@drawable/count_background"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            app:book_count="@{viewModel.currentBookCount}"
+            app:total_count="@{viewModel.totalBookCount}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
