@@ -78,7 +78,7 @@ class MainViewModel @Inject constructor(
         resetSearchResult(query)
 
         nowInitialQuerying = true
-        disposables.add(getBooksUseCase.execute(query, currentPage).subscribe(
+        disposables.add(getBooksUseCase.params(query, currentPage).subscribe(
             {
                 nowInitialQuerying = false
                 updateSearchBooks(it.info, it.books, currentPage)
@@ -92,7 +92,7 @@ class MainViewModel @Inject constructor(
             return
         }
 
-        disposables.add(getBooksUseCase.execute(currentQuery, ++currentPage).subscribe(
+        disposables.add(getBooksUseCase.params(currentQuery, ++currentPage).subscribe(
             { updateSearchBooks(it.info, it.books, currentPage)},
             { errorToast.value = Event(true) }
         ))
