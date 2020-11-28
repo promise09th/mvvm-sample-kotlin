@@ -4,7 +4,7 @@
 
 MVVM + Clean Architecture
 
-- DB : Room
+- Local : DB (Room) / Cache
 - Remote : Retrofit
 - Data : Repository / Data source
 - Domain : Usecase
