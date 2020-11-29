@@ -1,4 +1,4 @@
-package com.promise09th.mvvmkotlin
+package com.promise09th.mvvmkotlin.presentation
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

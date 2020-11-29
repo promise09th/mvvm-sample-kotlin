@@ -16,10 +16,17 @@ class MainViewModel @Inject constructor(
     private val getBooksUseCase: GetBooksUseCase
 ): ViewModel() {
 
-    val searchBooks: MutableLiveData<ArrayList<BookModel>> = MutableLiveData()
-    val selectedBooks: MutableLiveData<BookModel> = MutableLiveData()
-    val totalBookCount: MutableLiveData<Int> = MutableLiveData(0)
-    val currentBookCount: MutableLiveData<Int> = MutableLiveData(0)
+    val _searchBooks: MutableLiveData<ArrayList<BookModel>> = MutableLiveData()
+    val searchBooks: LiveData<ArrayList<BookModel>> = _searchBooks
+
+    val _selectedBooks: MutableLiveData<BookModel> = MutableLiveData()
+    val selectedBooks: LiveData<BookModel> = _selectedBooks
+
+    val _totalBookCount: MutableLiveData<Int> = MutableLiveData(0)
+    val totalBookCount: LiveData<Int> = _totalBookCount
+
+    val _currentBookCount: MutableLiveData<Int> = MutableLiveData(0)
+    val currentBookCount: LiveData<Int> = _currentBookCount
 
     private val _searchResultItemClicked: MutableLiveData<Event<BookModel>> = MutableLiveData()
     val searchResultItemClicked: LiveData<Event<BookModel>> = _searchResultItemClicked
@@ -43,28 +50,28 @@ class MainViewModel @Inject constructor(
     }
 
     fun onClickItem(book: BookModel) {
-        selectedBooks.value = book
+        _selectedBooks.value = book
         _searchResultItemClicked.setValue(Event(book))
     }
 
     private fun updateSearchBooks(bookInfo: BookInfoModel, lists: List<BookModel>, currentPage: Int) {
         isEnd = bookInfo.is_end
-        totalBookCount.value = bookInfo.pageable_count
+        _totalBookCount.value = bookInfo.pageable_count
 
         lists.sortedWith { t1: BookModel, t2: BookModel -> t2.datetime.compareTo(t1.datetime)
 }
         when (currentPage) {
             1 -> {
-                currentBookCount.value = lists.size
-                searchBooks.value = ArrayList(lists)
+                _currentBookCount.value = lists.size
+                _searchBooks.value = ArrayList(lists)
             }
             else -> {
                 searchBooks.value?.let {
                     val newArrayList = ArrayList<BookModel>()
                     newArrayList.addAll(it)
                     newArrayList.addAll(lists)
-                    currentBookCount.value = newArrayList.size
-                    searchBooks.value = newArrayList
+                    _currentBookCount.value = newArrayList.size
+                    _searchBooks.value = newArrayList
                 }
             }
         }
@@ -74,14 +81,14 @@ class MainViewModel @Inject constructor(
         currentQuery = query
         currentPage = 1
         isEnd = false
-        searchBooks.value = ArrayList()
+        _searchBooks.value = ArrayList()
     }
 
     fun fetchBooks(query: String) {
         resetSearchResult(query)
 
         nowInitialQuerying = true
-        disposables.add(getBooksUseCase.params(query, currentPage).subscribe(
+        disposables.add(getBooksUseCase.create(query, currentPage).subscribe(
             {
                 nowInitialQuerying = false
                 updateSearchBooks(
@@ -99,12 +106,13 @@ class MainViewModel @Inject constructor(
             return
         }
 
-        disposables.add(getBooksUseCase.params(currentQuery, ++currentPage).subscribe(
+        disposables.add(getBooksUseCase.create(currentQuery, ++currentPage).subscribe(
             {
                 updateSearchBooks(
                     it.info.mapToBookInfoModel(),
                     it.books.map { it.mapToBookModel() },
-                    currentPage)
+                    currentPage
+                )
             },
             { _errorToast.value = Event(true) }
         ))
