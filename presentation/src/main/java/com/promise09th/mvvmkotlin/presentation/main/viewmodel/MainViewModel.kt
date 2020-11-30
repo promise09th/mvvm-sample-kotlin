@@ -16,16 +16,16 @@ class MainViewModel @Inject constructor(
     private val getBooksUseCase: GetBooksUseCase
 ): ViewModel() {
 
-    val _searchBooks: MutableLiveData<ArrayList<BookModel>> = MutableLiveData()
+    private val _searchBooks: MutableLiveData<ArrayList<BookModel>> = MutableLiveData()
     val searchBooks: LiveData<ArrayList<BookModel>> = _searchBooks
 
-    val _selectedBooks: MutableLiveData<BookModel> = MutableLiveData()
+    private val _selectedBooks: MutableLiveData<BookModel> = MutableLiveData()
     val selectedBooks: LiveData<BookModel> = _selectedBooks
 
-    val _totalBookCount: MutableLiveData<Int> = MutableLiveData(0)
+    private val _totalBookCount: MutableLiveData<Int> = MutableLiveData(0)
     val totalBookCount: LiveData<Int> = _totalBookCount
 
-    val _currentBookCount: MutableLiveData<Int> = MutableLiveData(0)
+    private val _currentBookCount: MutableLiveData<Int> = MutableLiveData(0)
     val currentBookCount: LiveData<Int> = _currentBookCount
 
     private val _searchResultItemClicked: MutableLiveData<Event<BookModel>> = MutableLiveData()
