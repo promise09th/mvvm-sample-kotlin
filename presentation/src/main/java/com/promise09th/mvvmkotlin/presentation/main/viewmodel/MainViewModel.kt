@@ -10,6 +10,7 @@ import com.promise09th.mvvmkotlin.presentation.mapper.mapToBookModel
 import com.promise09th.mvvmkotlin.presentation.model.BookInfoModel
 import com.promise09th.mvvmkotlin.presentation.model.BookModel
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -43,6 +44,10 @@ class MainViewModel @Inject constructor(
     private var isEnd = false
     private var currentQuery = ""
     private var currentPage = 1
+
+    private fun Disposable.bind() {
+        disposables.add(this)
+    }
 
     override fun onCleared() {
         disposables.clear()
@@ -88,17 +93,18 @@ class MainViewModel @Inject constructor(
         resetSearchResult(query)
 
         nowInitialQuerying = true
-        disposables.add(getBooksUseCase.create(query, currentPage).subscribe(
-            {
-                nowInitialQuerying = false
-                updateSearchBooks(
-                    it.info.mapToBookInfoModel(),
-                    it.books.map { it.mapToBookModel() },
-                    currentPage
-                )
-            },
-            { _errorToast.value = Event(true) }
-        ))
+        getBooksUseCase(query, currentPage)
+            .subscribe(
+                {
+                    nowInitialQuerying = false
+                    updateSearchBooks(
+                        it.info.mapToBookInfoModel(),
+                        it.books.map { it.mapToBookModel() },
+                        currentPage
+                    )
+                },
+                { _errorToast.value = Event(true) }
+            ).bind()
     }
 
     fun moreFetchBooks() {
@@ -106,15 +112,16 @@ class MainViewModel @Inject constructor(
             return
         }
 
-        disposables.add(getBooksUseCase.create(currentQuery, ++currentPage).subscribe(
-            {
-                updateSearchBooks(
-                    it.info.mapToBookInfoModel(),
-                    it.books.map { it.mapToBookModel() },
-                    currentPage
-                )
-            },
-            { _errorToast.value = Event(true) }
-        ))
+        getBooksUseCase(currentQuery, ++currentPage)
+            .subscribe(
+                {
+                    updateSearchBooks(
+                        it.info.mapToBookInfoModel(),
+                        it.books.map { it.mapToBookModel() },
+                        currentPage
+                    )
+                },
+                { _errorToast.value = Event(true) }
+            ).bind()
     }
 }

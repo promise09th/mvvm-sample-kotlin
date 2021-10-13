@@ -11,8 +11,13 @@ import javax.inject.Inject
 
 class GetBooksUseCase @Inject constructor(private val bookRepository: BookRepository) {
 
-    fun create(query: String, page: Int = 1): Single<BookListDomain> {
-        return bookRepository.getBooks(query = query, sort = ACCURACY_SORT, page = page, size = DOCUMENT_SIZE)
+    operator fun invoke(query: String, page: Int = 1): Single<BookListDomain> {
+        return bookRepository.getBooks(
+            query = query,
+            sort = ACCURACY_SORT,
+            page = page,
+            size = DOCUMENT_SIZE
+        )
             .map {
                 BookListDomain(
                     it.info.mapToBookInfoDomain(),
