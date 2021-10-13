@@ -56,12 +56,12 @@ class MainViewModelTest {
             )
         )
 
-        Mockito.`when`(getBooksUseCase.create("아이유", 1)).thenReturn(Single.just(bookListDomain))
+        Mockito.`when`(getBooksUseCase("아이유", 1)).thenReturn(Single.just(bookListDomain))
 
         mainViewModel.fetchBooks("아이유")
 
         val testSubscriber: TestSubscriber<BookListDomain> = TestSubscriber.create()
-        getBooksUseCase.create("아이유", 1).toFlowable().subscribe(testSubscriber)
+        getBooksUseCase("아이유", 1).toFlowable().subscribe(testSubscriber)
 
         val booksResult = bookListDomain.books.map { it.mapToBookModel() }
         val booksCountResult = bookListDomain.books.size
